@@ -136,7 +136,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+chatgpt-data-generation/.env
 .venv
 env/
 venv/
