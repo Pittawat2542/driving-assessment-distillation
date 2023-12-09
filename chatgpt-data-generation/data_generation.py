@@ -1,8 +1,9 @@
 import json
+from time import perf_counter, sleep
 from pathlib import Path
 import pandas as pd
 from dotenv import load_dotenv
-from openai import OpenAI
+from openai import OpenAI, RateLimitError, OpenAIError
 from tiktoken import encoding_for_model
 from rich.progress import track
 from loguru import logger
@@ -63,19 +64,29 @@ def chatgpt(user_prompt: str) -> str:
     input_count = len(enc.encode(user_prompt))
     logger.info(f"Input count: {input_count}")
     logger.debug("Starting chat completion using OpenAI API")
+    start_time = perf_counter()
     try:
         chat_completion = client.chat.completions.create(
             messages=[{"role": "user", "content": user_prompt}],
             model=MODEL,
+            temperature=0,
+            seed=42,
         )
+        end_time = perf_counter()
         logger.debug("Chat completion finished")
-    except Exception as e:
+    except RateLimitError as e:
+        print(e)
+        raise e
+    except OpenAIError as e:
         logger.error(f"Chat completion failed: {e}")
         raise e
     response = chat_completion.choices[0].message.content
     logger.debug(f"Response: {response}")
     output_count = len(enc.encode(response))
     logger.info(f"Output count: {output_count}")
+    logger.info(f"Time taken: {end_time - start_time} seconds")
+    if end_time - start_time < 0.4:
+        sleep(0.4 - (end_time - start_time))
     return response
 
 
