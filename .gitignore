@@ -1,4 +1,6 @@
-data/
+data/raw
+data/chatgpt
+data/training_with_chatgpt.csv
 
 .idea/
 

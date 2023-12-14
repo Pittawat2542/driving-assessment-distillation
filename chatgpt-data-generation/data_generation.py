@@ -11,7 +11,7 @@ from loguru import logger
 MODEL = "gpt-3.5-turbo-1106"
 RESULTS_PATH = Path("results")
 LOGS_PATH = Path("logs")
-TRAINING_PATH = Path("../data-preparation-scripts/training.csv")
+TRAINING_PATH = Path("../data/training.csv")
 PROMPT_TEMPLATE = """You're monitoring a driving assessment session. You're provided with real-time driving information including objects within 50 meters around the vehicle and the current vehicle state. The vehicle state has 4 elements:
 
 1. throttle: a number between 0 and 0.7, where 0.7 indicates throttling
