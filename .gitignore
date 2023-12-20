@@ -139,6 +139,7 @@ celerybeat.pid
 
 # Environments
 chatgpt-data-generation/.env
+vector-database/.env
 .venv
 env/
 venv/
