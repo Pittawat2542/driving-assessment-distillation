@@ -1,6 +1,7 @@
 data/raw
 data/chatgpt
 data/training_with_chatgpt.csv
+distillation/checkpoint-10000
 
 .idea/
 
