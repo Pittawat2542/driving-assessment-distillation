@@ -11,7 +11,7 @@ from pathlib import Path
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, set_seed
 
-from evaluate.prompt import PROMPT_TEMPLATE
+from prompt import PROMPT_TEMPLATE
 
 SEED = 42
 TEST_DATASET_PATH = Path("../data/test_small.csv")
