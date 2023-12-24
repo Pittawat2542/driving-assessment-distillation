@@ -3,6 +3,7 @@ data/chatgpt
 data/training_with_chatgpt.csv
 distillation/checkpoint-10000
 distillation/checkpoint-zipped
+evaluate/outputs
 
 .idea/
 
@@ -142,6 +143,7 @@ celerybeat.pid
 # Environments
 chatgpt-data-generation/.env
 vector-database/.env
+evaluate/.env
 .venv
 env/
 venv/
