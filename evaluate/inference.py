@@ -47,7 +47,7 @@ def main(model: Annotated[str, Option("--model", "-m")] = "base"):
     logger.info(f"Dataset: {TEST_DATASET_PATH}")
 
     for index, row in tqdm(dataset.iterrows(), total=len(dataset)):
-        if output_path.joinpath(f"{index}.txt").exists():
+        if output_path.joinpath(f"{index}.json").exists():
             continue
 
         prompt = PROMPT_TEMPLATE.format(row["objects"], row["controls"])
