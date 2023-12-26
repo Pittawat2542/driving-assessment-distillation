@@ -1,6 +1,9 @@
 data/raw
 data/chatgpt
 data/training_with_chatgpt.csv
+data/test_small.csv
+data/train_small.csv
+data/training_with_chatgpt_small.csv
 distillation/checkpoint-10000
 distillation/checkpoint-zipped
 evaluate/outputs
