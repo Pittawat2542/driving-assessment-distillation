@@ -7,9 +7,14 @@ import pandas as pd
 from scipy.spatial.distance import cosine, euclidean, cityblock, chebyshev
 from pymilvus import connections, Collection
 from tqdm import tqdm
+from typing import Annotated
+import typer
+from typer import Option
+from dotenv import load_dotenv
 
-COLLECTION_NAME = "driving"
 TEST_DATASET_PATH = Path("../data/test_small.csv")
+
+app = typer.Typer()
 
 
 def string_to_vector(s):
@@ -32,15 +37,17 @@ def search(query, collection):
     return results
 
 
-def main():
+@app.command()
+def main(collection: Annotated[str, Option("--collection", "-c")] = "driving",
+         output_path: Annotated[str, Option("--output-path", "-o")] = "vectordb"):
     connections.connect(host=os.environ.get("MILVUS_HOST"), port=os.environ.get("MILVUS_PORT"))
-    driving_collection = Collection(COLLECTION_NAME)
+    driving_collection = Collection(collection)
     driving_collection.load()
-    logger.info(f"Collection: {COLLECTION_NAME}")
+    logger.info(f"Collection: {collection}")
 
     test_df = pd.read_csv(TEST_DATASET_PATH)
     logger.info(f"Dataset: {TEST_DATASET_PATH}")
-    output_path = Path("outputs/vectordb")
+    output_path = Path(f"outputs/{output_path}")
     output_path.mkdir(parents=True, exist_ok=True)
     logger.info(f"Output path: {output_path}")
 
@@ -92,6 +99,7 @@ def main():
 
 
 if __name__ == '__main__':
+    load_dotenv()
     Path("logs").mkdir(parents=True, exist_ok=True)
     logger.add("logs/{time}.log")
-    main()
+    app()

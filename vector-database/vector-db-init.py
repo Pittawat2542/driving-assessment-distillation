@@ -1,21 +1,28 @@
 import os
+from typing import Annotated
+
 from dotenv import load_dotenv
 import pandas as pd
+import typer
+from typer import Option
 from pathlib import Path
 
 from pymilvus import connections, FieldSchema, CollectionSchema, DataType, Collection, utility
 
 DIMENSION = 1536
-COLLECTION_NAME = "driving"
+
+app = typer.Typer()
 
 
-def main():
+@app.command()
+def main(collection: Annotated[str, Option("--collection", "-c")] = "driving",
+         data_path: Annotated[str, Option("--data-path", "-d")] = "./data/train_small.csv"):
     connections.connect(host=os.environ.get("MILVUS_HOST"), port=os.environ.get("MILVUS_PORT"))
     print(f"Connected to Milvus: {os.environ.get('MILVUS_HOST')}:{os.environ.get('MILVUS_PORT')}")
 
-    if utility.has_collection(COLLECTION_NAME):
-        print(f"Collection {COLLECTION_NAME} already exists, drop it first")
-        utility.drop_collection(COLLECTION_NAME)
+    if utility.has_collection(collection):
+        print(f"Collection {collection} already exists, drop it first")
+        utility.drop_collection(collection)
 
     fields = [
         FieldSchema(name='id', dtype=DataType.INT64, is_primary=True, auto_id=True),
@@ -35,7 +42,7 @@ def main():
 
     schema = CollectionSchema(fields)
 
-    driving_collection = Collection(COLLECTION_NAME, schema, consistency_level="Strong")
+    driving_collection = Collection(collection, schema, consistency_level="Strong")
 
     index_params = {
         'index_type': 'FLAT',
@@ -43,9 +50,9 @@ def main():
         'params': {'nlist': 1024}
     }
     driving_collection.create_index(field_name="embedding", index_params=index_params)
-    print(f"Created collection {COLLECTION_NAME}")
+    print(f"Created collection {collection}")
 
-    df = pd.read_csv(Path("../data/train_small.csv"))
+    df = pd.read_csv(Path(data_path))
     print(f"Loaded {len(df)} entities from CSV file")
 
     for index, row in df.iterrows():
@@ -61,9 +68,9 @@ def main():
         entities.pop("chatgpt_raw_response")
         driving_collection.insert(entities)
 
-    print(f"Inserted {len(df)} entities into collection {COLLECTION_NAME}")
+    print(f"Inserted {len(df)} entities into collection {collection}")
 
 
 if __name__ == "__main__":
     load_dotenv()
-    main()
+    app()
