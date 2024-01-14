@@ -47,9 +47,11 @@ def main(model: Annotated[str, Option("--model", "-m")] = "base"):
         if output_path.joinpath(f"{index}.json").exists():
             continue
 
-        generated_message = json.load(
+        generated_message_obj = json.load(
             generated_message_path.joinpath(f"{index}.json").open()
-        )["message"]
+        )
+        generated_message = generated_message_obj["message"]
+        generated_message_time = generated_message_obj["time"]
         start_time = perf_counter()
         embedding = get_embedding(generated_message, client)
         end_time = perf_counter()
@@ -60,7 +62,8 @@ def main(model: Annotated[str, Option("--model", "-m")] = "base"):
             "controls": row["controls"],
             "message": generated_message,
             "embedding": embedding,
-            "time": end_time - start_time,
+            "time": generated_message_time,
+            "embedding_time": end_time - start_time,
             "created_at": pd.Timestamp.now().isoformat(),
         }
         json.dump(result_obj, output_path.joinpath(f"{index}.json").open("w"))
