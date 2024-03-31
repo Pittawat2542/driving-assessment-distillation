@@ -7,7 +7,7 @@ Pittawat Taveekitworachai, Pratch Suntichaikul, Chakarida Nukoolkit, and Ruck Th
 
 ## Abstract
 
-This paper presents a cost-effective approach to utilizing large language models (LLMs) as part of advanced driver-assistance systems (ADAS) through a knowledge-distilled model for driving assessment. LLMs have recently been employed across various domains. However, due to their size, they require sufficient computing infrastructure for deployment and ample time for generation. These characteristics make LLMs challenging to integrate into applications requiring real-time feedback, including ADAS. An existing study employed a vector database containing responses generated from an LLM to act as a surrogate model. However, this approach is limited when handling out-of-distribution (OOD) scenarios, which LLMs excel at. We propose a novel approach that utilizes a distilled model obtained from an established knowledge distillation technique to perform as a surrogate model for a target LLM, offering high resilience in handling OOD situations with substantially faster inference time. To assess the performance of the proposed approach, we also introduce a new dataset for driving scenarios and situations (\texttt{DriveSSD}), containing 124,248 records. Additionally, we augment randomly selected 12,425 records, 10\% of our \texttt{DriveSSD}, with text embeddings generated from an embedding model. We distill the model using 10,000 augmented records and test all approaches on the remaining 2,425 records. We find that the distilled model introduced in this study has better performance across metrics, with half of the inference time used by the previous approach. We make our source code and data publicly available.
+This paper presents a cost-effective approach to utilizing large language models (LLMs) as part of advanced driver-assistance systems (ADAS) through a knowledge-distilled model for driving assessment. LLMs have recently been employed across various domains. However, due to their size, they require sufficient computing infrastructure for deployment and ample time for generation. These characteristics make LLMs challenging to integrate into applications requiring real-time feedback, including ADAS. An existing study employed a vector database containing responses generated from an LLM to act as a surrogate model. However, this approach is limited when handling out-of-distribution (OOD) scenarios, which LLMs excel at. We propose a novel approach that utilizes a distilled model obtained from an established knowledge distillation technique to perform as a surrogate model for a target LLM, offering high resilience in handling OOD situations with substantially faster inference time. To assess the performance of the proposed approach, we also introduce a new dataset for driving scenarios and situations (_DriveSSD_), containing 124,248 records. Additionally, we augment randomly selected 12,425 records, 10\% of our _DriveSSD_, with text embeddings generated from an embedding model. We distill the model using 10,000 augmented records and test all approaches on the remaining 2,425 records. We find that the distilled model introduced in this study has better performance across metrics, with half of the inference time used by the previous approach. We make our source code and data publicly available.
 
 ## File structure
 ```
@@ -23,6 +23,13 @@ This paper presents a cost-effective approach to utilizing large language models
 ├── vector-database/ # 4. A script used to propagate the vector database.
 └── volumes/ # 5.2. A vector database containing all of the data, along with the Docker Compose file.
 ```
+
+## Models
+- Base model (`google/flan-t5-base`): [https://huggingface.co/google/flan-t5-base](https://huggingface.co/google/flan-t5-base)
+- Distilled model (`pittawat/distilled-chatgpt-drivessd-flan-t5-base`): [https://huggingface.co/pittawat/distilled-chatgpt-drivessd-flan-t5-base](https://huggingface.co/pittawat/distilled-chatgpt-drivessd-flan-t5-base)
+
+## Dataset
+- DriveSSD (`pittawat/drivessd`): [https://huggingface.co/datasets/pittawat/drivessd](https://huggingface.co/datasets/pittawat/drivessd)
 
 ## Installation and Usage
 0. Create a virtual environment (if needed):
