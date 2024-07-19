@@ -1,4 +1,4 @@
-# Speed Up! Cost-Effective Large Language Model for ADAS Via Knowledge Distillation
+# Speed Up! Cost-Effective Large Language Model for ADAS Via Knowledge Distillation ([Paper](https://ieeexplore.ieee.org/document/10588799))
 
 This repository contains the code and datasets for the paper "Speed Up! Cost-Effective Large Language Model for ADAS Via Knowledge Distillation" accepted at [IEEE IV 2024](http://ieee-iv.org/2024/).
 
